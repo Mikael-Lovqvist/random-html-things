@@ -14,7 +14,9 @@
 
 			draw(context) {
 				context.font = `${this.z*20}px serif`;
-				context.fillStyle = `hsl(0, ${Math.random()*30}%,${Math.random()*20+this.z*20+40}%)`;
+				const c = Math.sin(this.x*0.00133) * Math.sin(this.y*0.00123) * Math.sin(this.z*2.452);;
+
+				context.fillStyle = `hsl(${c*360}, 80%, ${Math.random()*20+this.z*20+40}%)`;
 				context.fillText('★', this.x, this.y);
 			}
 
