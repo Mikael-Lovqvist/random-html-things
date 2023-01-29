@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Starfield</title>
+	<meta charset="utf-8">
+	<script>
+
+		class Star {
+			constructor(x, y, z) {
+				this.x = x;
+				this.y = y;
+				this.z = z;
+			}
+
+			draw(context) {
+				context.font = `${this.z*20}px serif`;
+				context.fillStyle = `hsl(0, ${Math.random()*30}%,${Math.random()*20+this.z*20+40}%)`;
+				context.fillText('★', this.x, this.y);
+			}
+
+			move(dt) {
+				this.x -= (this.z + 1) * dt * .03;
+				if (this.x < 0) {
+					this.x = window.innerWidth;
+				}
+			}
+		}
+
+		function run() {
+
+			const canvas = document.createElement('canvas');
+			canvas.style.position = 'absolute';
+			canvas.style.left = '0px';
+			canvas.style.top = '0px';
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			console.log(window);
+
+			canvas.style.backgroundColor = 'black';
+
+			document.body.appendChild(canvas);
+
+			const context = canvas.getContext('2d');
+
+
+			const star_field = new Array();
+			const N_STARS = 256;
+
+			for (let i=0; i<N_STARS; i++) {
+				const x = Math.random() * window.innerWidth;
+				const y = Math.random() * window.innerHeight;
+				const z = Math.random();
+				star_field.push(new Star(x, y, z));
+			}
+
+
+			let last_time = Date.now();
+
+
+			function anim() {
+
+				let current_time = Date.now();
+				const dt = current_time - last_time;
+				last_time = current_time;
+
+				context.clearRect(0,0,canvas.width, canvas.height);
+
+
+				for (const star of star_field) {
+					star.draw(context);
+					star.move(dt);
+				}
+
+
+				window.requestAnimationFrame(anim);
+			}
+
+			anim();
+
+		}
+	</script>
+
+</head>
+<body onload="run();">
+</body>
+</html>
